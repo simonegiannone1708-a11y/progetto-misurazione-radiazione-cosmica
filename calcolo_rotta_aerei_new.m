@@ -1,5 +1,4 @@
 %% CALCOLO ROTTA TRA AEROPORTI
-% Programma per calcolare la rotta ottimale tra due aeroporti
 % Utilizza la formula della grande cerchio (Great Circle Distance)
 
 clear all; close all; clc;
@@ -1143,8 +1142,10 @@ protoni_time_str = '';
 fattore_protoni_global = 1.0; % fattore moltiplicativo medio lungo la rotta
 
 try
-    url_p_primary = 'https://services.swpc.noaa.gov/json/goes/primary/integral_protons-1-day.json';
-    url_p_fallback = 'https://services.swpc.noaa.gov/json/goes/primary/integral_protons-7-day.json';
+    % Nota: gli endpoint NOAA hanno il trattino tra "integral" e "protons"
+    % Endpoint funzionanti (JSON, GOES primary):
+    url_p_primary = 'https://services.swpc.noaa.gov/json/goes/primary/integral-protons-1-day.json';
+    url_p_fallback = 'https://services.swpc.noaa.gov/json/goes/primary/integral-protons-7-day.json';
     optionsP = weboptions('Timeout', 10, 'ContentType', 'json');
 
     gotP = false;
