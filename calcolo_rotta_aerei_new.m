@@ -578,6 +578,77 @@ for i = 1:n_aeroporti
 end
 fprintf('╚════╩═════════════════════════════════╩══════╩══════════════════╩═════════════════════════════╝\n');
 
+% ========== SCELTA MODALITÀ DATI (Real-time / Storico) ==========
+fprintf('\n');
+fprintf('╔════════════════════════════════════════════════════════════╗\n');
+fprintf('║          MODALITÀ DATI SPACE WEATHER                       ║\n');
+fprintf('╚════════════════════════════════════════════════════════════╝\n');
+fprintf('\n');
+
+modalita_dati = { ...
+    'Dati in tempo reale (NOAA SWPC)', ...
+    'Evento SEP storico - Gennaio 2005 (forte)', ...
+    'Evento SEP storico - Ottobre 2003 Halloween Storm (estremo)', ...
+    'Evento SEP storico - Settembre 2017 (severo)'};
+
+[id_modalita, ok_mod] = listdlg('ListString', modalita_dati, ...
+    'SelectionMode', 'single', ...
+    'Name', 'Modalità dati radiazione', ...
+    'PromptString', 'Seleziona la fonte dati:', ...
+    'ListSize', [450, 120]);
+
+if ~ok_mod
+    fprintf('Selezione annullata.\n');
+    return;
+end
+
+usa_dati_storici = (id_modalita > 1);
+modalita_scelta = modalita_dati{id_modalita};
+
+% Database eventi SEP storici
+eventi_sep_storici = struct();
+
+% Evento 1: Gennaio 2005 (20 Gennaio) - forte evento
+eventi_sep_storici(1).nome = 'Gennaio 2005 (forte)';
+eventi_sep_storici(1).data = '20-Jan-2005';
+eventi_sep_storici(1).proton_flux_10mev = 5040;  % pfu (>=10 MeV)
+eventi_sep_storici(1).proton_flux_100mev = 84;   % pfu (>=100 MeV)
+eventi_sep_storici(1).kp_index = 8.0;
+eventi_sep_storici(1).descrizione = 'Forte tempesta solare con significativo aumento del flusso protonico';
+
+% Evento 2: Ottobre 2003 (28-29 Ottobre) - Halloween Storm, evento estremo
+eventi_sep_storici(2).nome = 'Ottobre 2003 Halloween Storm (estremo)';
+eventi_sep_storici(2).data = '28-Oct-2003';
+eventi_sep_storici(2).proton_flux_10mev = 29500; % pfu (>=10 MeV) - uno dei più forti registrati
+eventi_sep_storici(2).proton_flux_100mev = 466;  % pfu (>=100 MeV)
+eventi_sep_storici(2).kp_index = 9.0;
+eventi_sep_storici(2).descrizione = 'Halloween Storm - uno degli eventi SEP più intensi mai registrati';
+
+% Evento 3: Settembre 2017 (10 Settembre) - evento severo
+eventi_sep_storici(3).nome = 'Settembre 2017 (severo)';
+eventi_sep_storici(3).data = '10-Sep-2017';
+eventi_sep_storici(3).proton_flux_10mev = 6530;  % pfu (>=10 MeV)
+eventi_sep_storici(3).proton_flux_100mev = 132;  % pfu (>=100 MeV)
+eventi_sep_storici(3).kp_index = 8.3;
+eventi_sep_storici(3).descrizione = 'Forte tempesta solare seguita da CME multipli';
+
+if usa_dati_storici
+    evento_selezionato = eventi_sep_storici(id_modalita - 1);
+    fprintf('\nEvento SEP storico selezionato:\n');
+    fprintf('  Nome: %s\n', evento_selezionato.nome);
+    fprintf('  Data: %s\n', evento_selezionato.data);
+    fprintf('  Descrizione: %s\n', evento_selezionato.descrizione);
+    fprintf('  Proton flux >=10 MeV: %.0f pfu\n', evento_selezionato.proton_flux_10mev);
+    fprintf('  Proton flux >=100 MeV: %.0f pfu\n', evento_selezionato.proton_flux_100mev);
+    fprintf('  Kp index: %.1f\n', evento_selezionato.kp_index);
+    fprintf('\n');
+else
+    % Inizializza evento_selezionato vuoto per modalità tempo reale
+    evento_selezionato = struct('nome', '', 'data', '', 'descrizione', '', ...
+        'proton_flux_10mev', 0, 'proton_flux_100mev', 0, 'kp_index', 0);
+    fprintf('\nUtilizzando dati in tempo reale da NOAA SWPC...\n\n');
+end
+
 % Scelta categoria utente prima della selezione aeroporti
 categorie_utenti = { ...
     'Pilota', ...
@@ -1029,16 +1100,25 @@ dose_volo = dose_accumulata(end);
 indice_kp = 4;  % valore di default (attività geomagnetica moderata)
 descrizione_tempesta = 'Dati non disponibili (usando valore di default)';
 fattore_tempesta = 1.0;
+kp_time_str = '';  % inizializza sempre
 
-try
-    url_kp_primary = 'https://services.swpc.noaa.gov/json/planetary_k_index_1m.json';
-    url_kp_fallback = 'https://services.swpc.noaa.gov/json/planetary_k_index.json';
-    options = weboptions('Timeout', 10, 'ContentType', 'json');
+if usa_dati_storici
+    % Modalità storica: usa i valori dell'evento selezionato
+    indice_kp = evento_selezionato.kp_index;
+    kp_ok = true;
+    kp_time_str = evento_selezionato.data;  % usa la data dell'evento
+    descrizione_tempesta = sprintf('EVENTO STORICO - %s (%s): Kp = %.1f', ...
+        evento_selezionato.nome, evento_selezionato.data, indice_kp);
+else
+    % Modalità tempo reale: recupera dati da NOAA
+    try
+        url_kp_primary = 'https://services.swpc.noaa.gov/json/planetary_k_index_1m.json';
+        url_kp_fallback = 'https://services.swpc.noaa.gov/json/planetary_k_index.json';
+        options = weboptions('Timeout', 10, 'ContentType', 'json');
 
-    kp_ok = false;
-    kp_time_str = '';
+        kp_ok = false;
 
-    % Parser Kp definito come funzione locale a fine file
+        % Parser Kp definito come funzione locale a fine file
 
     % Lettura primaria (1m)
     try
@@ -1132,15 +1212,26 @@ try
     else
         descrizione_tempesta = 'Fonte NOAA non raggiungibile o formato inatteso';
     end
-catch
-    descrizione_tempesta = 'Connessione non disponibile - usando valori di default';
-end
+    catch
+        descrizione_tempesta = 'Connessione non disponibile - usando valori di default';
+    end
+end % fine if usa_dati_storici per Kp
 
 % ========== DATI IN TEMPO REALE - FLUSSO DI PROTONI (GOES) ==========
 proton_flux_pfu = 0; % pfu = particelle/(cm^2 s sr)
 descrizione_protoni = 'Dati protoni non disponibili (usando valore di default)';
-protoni_time_str = '';
+protoni_time_str = '';  % inizializza sempre
 fattore_protoni_global = 1.0; % fattore moltiplicativo medio lungo la rotta
+
+if usa_dati_storici
+    % Modalità storica: usa i valori dell'evento selezionato
+    proton_flux_pfu = evento_selezionato.proton_flux_10mev;
+    gotP = true;
+    protoni_time_str = evento_selezionato.data;  % usa la data dell'evento
+    descrizione_protoni = sprintf('EVENTO STORICO - %s (%s): Proton Flux (>=10 MeV) = %.1f pfu', ...
+        evento_selezionato.nome, evento_selezionato.data, proton_flux_pfu);
+else
+    % Modalità tempo reale: recupera dati da NOAA GOES
 
 try
     % Nota: gli endpoint NOAA hanno il trattino tra "integral" e "protons"
@@ -1185,9 +1276,10 @@ try
     else
         descrizione_protoni = 'GOES protoni non raggiungibile o formato inatteso';
     end
-catch
-    descrizione_protoni = 'Connessione non disponibile - protoni default';
-end
+    catch
+        descrizione_protoni = 'Connessione non disponibile - protoni default';
+    end
+end % fine if usa_dati_storici per protoni
 
 % ========== STATO EVENTO SEP (Solar Energetic Particles) ==========
 sep_active = false;
@@ -1313,6 +1405,17 @@ fprintf('  Quota crociera: FL%.0f (%.0f ft / %.0f m)\n', quota_crociera_ft/100, 
 fprintf('  Rotta iniziale: %.1f° (da Nord in senso orario)\n', rotta_deg);
 fprintf('  Tempo di volo:  %d h %d min (a 900 km/h)\n', ore, minuti);
 fprintf('\n');
+
+% Mostra modalità dati (tempo reale o storica)
+if usa_dati_storici
+    fprintf('===================================================================\n');
+    fprintf(' MODALITA'' SIMULAZIONE EVENTO STORICO\n');
+    fprintf(' Evento: %s\n', evento_selezionato.nome);
+    fprintf(' Data: %s\n', evento_selezionato.data);
+    fprintf(' %s\n', evento_selezionato.descrizione);
+    fprintf('===================================================================\n');
+    fprintf('\n');
+end
 
 fprintf('RADIAZIONI COSMICHE:\n');
 fprintf('  GCR (quota + lat geomagnetica + ciclo solare): %.4f mSv/h\n', radiazione_media_oraria_gcr);
@@ -1462,10 +1565,15 @@ pos(1) = pos(1) + 0.04;
 set(ax2, 'Position', pos);
 
 % Titolo in rosso con categoria tra parentesi
-titolo_panel = sprintf('DATI DI VOLO (%s)', categoria_scelta);
+% Abbrevia "Ricercatori scientifici (frequentanti rotte polari)" a "Ricercatori"
+categoria_display = categoria_scelta;
+if startsWith(categoria_display, 'Ricercatori')
+    categoria_display = 'Ricercatori';
+end
+titolo_panel = sprintf('DATI DI VOLO (%s)', categoria_display);
 text(0.95, 1.02, titolo_panel, 'Parent', ax2, 'VerticalAlignment', 'top', ...
     'HorizontalAlignment', 'right', 'FontSize', 9.5, 'FontWeight', 'bold', ...
-    'Color', [1 0 0], 'FontName', 'Courier New', 'Units', 'normalized');
+    'Color', [1 0 0], 'FontName', 'Courier New', 'Units', 'normalized', 'Interpreter', 'none');
 
 % Gestisci nomi lunghi degli aeroporti con a capo automatico
 nome_partenza = aero1.nome;
@@ -1489,7 +1597,7 @@ dati_partenza_arrivo = sprintf(['PARTENZA:\n' ...
     nome_arrivo, aero2.iata, aero2.citta, aero2.nazione);
 
 text(0.95, 0.90, dati_partenza_arrivo, 'Parent', ax2, 'VerticalAlignment', 'top', ...
-    'HorizontalAlignment', 'right', 'FontSize', 8.5, 'FontName', 'Courier New', 'Units', 'normalized');
+    'HorizontalAlignment', 'right', 'FontSize', 8.5, 'FontName', 'Courier New', 'Units', 'normalized', 'Interpreter', 'none');
 
 % Riga 1: QUOTA CROCIERA (sinistra) e TEMPO DI VOLO (destra)
 dati_quota = sprintf(['QUOTA CROCIERA:\n' ...
@@ -1501,10 +1609,10 @@ dati_tempo = sprintf(['TEMPO DI VOLO:\n' ...
     ore, minuti);
 
 text(0.48, 0.45, dati_quota, 'Parent', ax2, 'VerticalAlignment', 'top', ...
-    'HorizontalAlignment', 'right', 'FontSize', 8.5, 'FontName', 'Courier New', 'Units', 'normalized');
+    'HorizontalAlignment', 'right', 'FontSize', 8.5, 'FontName', 'Courier New', 'Units', 'normalized', 'Interpreter', 'none');
 
 text(0.95, 0.45, dati_tempo, 'Parent', ax2, 'VerticalAlignment', 'top', ...
-    'HorizontalAlignment', 'right', 'FontSize', 8.5, 'FontName', 'Courier New', 'Units', 'normalized');
+    'HorizontalAlignment', 'right', 'FontSize', 8.5, 'FontName', 'Courier New', 'Units', 'normalized', 'Interpreter', 'none');
 
 % Riga 2: TIPO VOLO (sinistra) e TIPO ROTTA (destra)
 dati_tipo_volo = sprintf(['TIPO VOLO:\n' ...
@@ -1516,10 +1624,10 @@ dati_tipo_rotta = sprintf(['TIPO ROTTA:\n' ...
     tipo_rotta);
 
 text(0.48, 0.28, dati_tipo_volo, 'Parent', ax2, 'VerticalAlignment', 'top', ...
-    'HorizontalAlignment', 'right', 'FontSize', 8.5, 'FontName', 'Courier New', 'Units', 'normalized');
+    'HorizontalAlignment', 'right', 'FontSize', 8.5, 'FontName', 'Courier New', 'Units', 'normalized', 'Interpreter', 'none');
 
 text(0.95, 0.28, dati_tipo_rotta, 'Parent', ax2, 'VerticalAlignment', 'top', ...
-    'HorizontalAlignment', 'right', 'FontSize', 8.5, 'FontName', 'Courier New', 'Units', 'normalized');
+    'HorizontalAlignment', 'right', 'FontSize', 8.5, 'FontName', 'Courier New', 'Units', 'normalized', 'Interpreter', 'none');
 
 % Riga 3: RADIAZIONE (sinistra) e TEMPESTA SOLARE (destra)
 % Formatta i timestamp con spazio tra data e ora ed elimina eventuale 'Z'
@@ -1578,11 +1686,11 @@ dati_tempesta = sprintf(['%s\n' ...
     temp_header, indice_kp, flux_display, sep_line, dose_volo_finale, dose_cumulativa, limite_msg);
 
 text(0.95, 0.11, dati_radiazione, 'Parent', ax2, 'VerticalAlignment', 'top', ...
-    'HorizontalAlignment', 'right', 'FontSize', 8.5, 'FontName', 'Courier New', 'Units', 'normalized');
+    'HorizontalAlignment', 'right', 'FontSize', 8.5, 'FontName', 'Courier New', 'Units', 'normalized', 'Interpreter', 'none');
 
 % Sposta TEMPESTA SOLARE ancora più in basso sul lato sinistro del pannello
 text(0.95, -0.18, dati_tempesta, 'Parent', ax2, 'VerticalAlignment', 'top', ...
-    'HorizontalAlignment', 'right', 'FontSize', 8.5, 'FontName', 'Courier New', 'Units', 'normalized', 'Clipping', 'off');
+    'HorizontalAlignment', 'right', 'FontSize', 8.5, 'FontName', 'Courier New', 'Units', 'normalized', 'Clipping', 'off', 'Interpreter', 'none');
 
 % ========== MAPPA DI RADIAZIONE COSMICA ==========
 % Subplot per la mappa di radiazione (bottom row, stessa larghezza della mappa della rotta)
@@ -1656,6 +1764,13 @@ axis(ax3, [-180 180 -90 90]);
     % Attendere finché l'utente non clicca uno dei pulsanti
     scelta_button = '';
     while isempty(scelta_button)
+        % Verifica che i pulsanti esistano ancora
+        if ~ishandle(btn_no) || ~ishandle(btn_si)
+            % Se la finestra è stata chiusa, termina
+            scelta_button = 'NO';
+            break;
+        end
+        
         if ~isempty(get(btn_no, 'UserData'))
             scelta_button = get(btn_no, 'UserData');
         elseif ~isempty(get(btn_si, 'UserData'))
@@ -1664,9 +1779,13 @@ axis(ax3, [-180 180 -90 90]);
         pause(0.1);
     end
     
-    % Elimina i pulsanti
-    delete(btn_no);
-    delete(btn_si);
+    % Elimina i pulsanti se esistono ancora
+    if ishandle(btn_no)
+        delete(btn_no);
+    end
+    if ishandle(btn_si)
+        delete(btn_si);
+    end
     
     if strcmp(scelta_button, 'NO')
         continua_volo = false;
