@@ -21,18 +21,76 @@ Modalità simulazione con database di tempeste solari reali:
 - **Settembre 2017**: 6530 pfu, Kp=8.3 (severo)
 
 ### ✈️ Database Aeroporti
-65 aeroporti internazionali su 6 continenti:
-- Europa: FCO, MXP, LHR, CDG, FRA, AMS, BCN, MAD, VIE, ZRH
-- Nord America: JFK, LAX, ORD, DFW, ATL, YVR, YYZ, MEX
-- Asia: HND, PEK, SIN, ICN, BKK, DXB, HKG, DEL
-- Sud America: GRU, EZE, GIG, SCL, BOG, LIM
-- Africa: JNB, CAI, NBO, CPT, LOS, ADD
-- Oceania: SYD, MEL, AKL, PER
-- Rotte polari: KEF (Reykjavik), ANC (Anchorage), LYR (Svalbard)
+74 aeroporti internazionali su 6 continenti:
+- **Europa** (18): FCO, MXP, VCE, NAP, CTA, CDG, BCN, LHR, AMS, FRA, MAD, VIE, ZRH, MUC, BRU, SVO, ATH, IST
+- **Nord America** (12): JFK, LAX, ORD, DFW, ATL, MIA, SFO, BOS, YYZ, YVR, MEX (include USA, Canada, Messico)
+- **Asia** (11): NRT, HKG, SIN, BKK, DEL, ICN, PEK, SHA, DXB, DOH, AUH, TLV, RUH (include Medio Oriente)
+- **Sud America** (7): GRU, GIG, EZE, LIM, SCL, BOG, CCS
+- **Africa** (5): JNB, CPT, NBO, CAI, ADD
+- **Oceania** (4): SYD, MEL, PER, AKL
+- **Rotte polari** (13): ANC (Anchorage), KEF (Reykjavik), TOS (Tromsø), MRV (Murmansk), NRL (Naryan-Mar), GOH (Nuuk), SFJ (Sondre Strømfjord), INK (Inuvik), YZF (Yellowknife), BRW (Barrow), HFT (Hammerfest), LYR (Longyearbyen), ARH (Arkhangelsk)
+- **Russia** (4): LED (San Pietroburgo), OVB (Novosibirsk), SVX (Ekaterinburg), VVO (Vladivostok)
+
+**Aeroporti italiani disponibili**: FCO (Roma Fiumicino), MXP (Milano Malpensa), VCE (Venezia), NAP (Napoli), CTA (Catania)
 
 ### 🛫 Tipi di Rotta
 - **Ortodromica (Great Circle)**: rotta più breve su sfera (>300 NM) - ottimale per lunghe distanze
-- **Lossodromica (Rhumb Line)**: rotta a rotta costante (≤300 NM) - pratica per brevi tratte
+- **Lossodromica (Rhumb Line)**: rotta che interseca tutti i meridiani con lo stesso angolo (≤300 NM) - ottimale per le tratte brevi
+
+# 🌌 Progetto Misurazione Radiazione Cosmica
+
+Sistema avanzato per il **calcolo della dose di radiazione cosmica** ricevuta durante voli aerei, con integrazione di **dati meteo spaziali in tempo reale** e **simulazione di eventi solari storici**.
+
+Il progetto è pensato per analisi scientifiche, supporto alla sicurezza aeronautica e valutazione dell’esposizione radiologica di equipaggi e passeggeri su rotte internazionali, incluse **rotte polari ad alta latitudine**.
+
+---
+
+## ✨ Obiettivi
+- Stimare l’esposizione alle **radiazioni ionizzanti** in ambiente aeronautico
+- Integrare **dati reali NOAA SWPC**
+- Simulare **eventi solari estremi (SEP)**
+- Valutare la conformità ai **limiti normativi ICRP**
+
+---
+
+## 🔬 Tipologie di Radiazione Considerate
+
+### ☄️ GCR – Galactic Cosmic Rays
+Radiazione cosmica galattica di fondo dipendente da:
+- **Altitudine di volo**
+- **Latitudine geomagnetica**
+- **Fase del ciclo solare**
+
+### ☀️ SEP – Solar Energetic Particles
+Particelle solari energetiche durante:
+- Tempeste geomagnetiche
+- Espulsioni di massa coronale (CME)
+- Eventi solari estremi storici
+
+---
+
+## 📡 Dati in Tempo Reale
+
+- **NOAA SWPC Integration**
+  - Indice **Kp** (attività geomagnetica)
+  - Flusso protonico **GOES ≥10 MeV**
+- **Aggiornamenti**
+  - Kp: ogni minuto
+  - Proton flux: giornaliero
+
+---
+
+## 🌩️ Eventi SEP Storici (Modalità Simulazione)
+
+| Evento | Proton Flux (pfu) | Kp | Intensità |
+|------|------------------|----|-----------|
+| Gennaio 2005 | 5.040 | 8.0 | Forte |
+| Halloween Storm (2003) | 29.500 | 9.0 | **Estremo** |
+| Settembre 2017 | 6.530 | 8.3 | Severo |
+
+---
+
+## 📊 Modello di Calcolo
 
 ### 👥 Categorie Utenti con Limiti Normativi
 1. **Pilota**: 20 mSv/anno (ICRP 2007)
@@ -112,7 +170,7 @@ gmlat = asin(sin(lat)*sin(lat_mag) + cos(lat)*cos(lat_mag)*cos(lon - lon_mag))
 ## Requisiti Tecnici
 
 ### Software
-- **MATLAB R2020+** o **GNU Octave 6.0+**
+- **MATLAB R2020+** 
 - Mapping Toolbox (per coastlines.mat)
 - Connessione Internet (modalità tempo reale)
 
@@ -172,7 +230,7 @@ calcolo_rotta_aerei_new
 
 ## Autore
 
-Simon Giannone (2025-2026)
+Simone Giannone 
 
 ## Repository
 

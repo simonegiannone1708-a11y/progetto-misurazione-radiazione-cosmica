@@ -556,14 +556,34 @@ aeroporti(14).regione = 'Europa';  % Monaco
 aeroporti(15).regione = 'Europa';  % Bruxelles
 aeroporti(17).regione = 'Europa';  % Mosca
 aeroporti(18).regione = 'Europa';  % Atene
+aeroporti(53).regione = 'Europa';  % Istanbul
 aeroporti(56).regione = 'Europa';  % San Pietroburgo
 aeroporti(57).regione = 'Europa';  % Novosibirsk
 aeroporti(58).regione = 'Europa';  % Ekaterinburg
 aeroporti(59).regione = 'Europa';  % Vladivostok
+aeroporti(89).regione = 'Europa';  % Milano Linate
+aeroporti(90).regione = 'Europa';  % Roma Ciampino
+aeroporti(91).regione = 'Europa';  % Pisa
+aeroporti(92).regione = 'Europa';  % Firenze
+aeroporti(93).regione = 'Europa';  % Bologna
+aeroporti(94).regione = 'Europa';  % Palermo
+aeroporti(95).regione = 'Europa';  % Bari
+aeroporti(96).regione = 'Europa';  % Cagliari
+aeroporti(97).regione = 'Europa';  % Lisbona
+aeroporti(98).regione = 'Europa';  % Copenaghen
+aeroporti(99).regione = 'Europa';  % Stoccolma
+aeroporti(100).regione = 'Europa'; % Oslo
+aeroporti(101).regione = 'Europa'; % Helsinki
+aeroporti(102).regione = 'Europa'; % Varsavia
+aeroporti(103).regione = 'Europa'; % Praga
+aeroporti(104).regione = 'Europa'; % Budapest
+aeroporti(105).regione = 'Europa'; % Dublino
+aeroporti(106).regione = 'Europa'; % Manchester
+aeroporti(107).regione = 'Europa'; % Edimburgo
 
 % Asia (include Medio Oriente)
 aeroporti(16).regione = 'Asia';  % Dubai
-aeroporti(19).regione = 'Asia';  % Tokyo
+aeroporti(19).regione = 'Asia';  % Tokyo Narita
 aeroporti(20).regione = 'Asia';  % Hong Kong
 aeroporti(21).regione = 'Asia';  % Singapore
 aeroporti(22).regione = 'Asia';  % Bangkok
@@ -573,12 +593,11 @@ aeroporti(25).regione = 'Asia';  % Pechino
 aeroporti(26).regione = 'Asia';  % Shanghai
 aeroporti(51).regione = 'Asia';  % Doha
 aeroporti(52).regione = 'Asia';  % Abu Dhabi
-aeroporti(53).regione = 'Asia';  % Istanbul
 aeroporti(54).regione = 'Asia';  % Tel Aviv
 aeroporti(55).regione = 'Asia';  % Riyadh
 
 % Nord America (27-28, 30-37)
-aeroporti(27).regione = 'Nord America';  % New York
+aeroporti(27).regione = 'Nord America';  % New York JFK
 aeroporti(28).regione = 'Nord America';  % Los Angeles
 aeroporti(30).regione = 'Nord America';  % Chicago
 aeroporti(31).regione = 'Nord America';  % Atlanta
@@ -589,7 +608,7 @@ aeroporti(35).regione = 'Nord America';  % Boston
 aeroporti(36).regione = 'Nord America';  % Toronto
 aeroporti(37).regione = 'Nord America';  % Vancouver
 
-% Sud America (29, 60-65)
+% Sud America
 aeroporti(29).regione = 'Sud America';  % São Paulo
 aeroporti(60).regione = 'Sud America';  % Rio de Janeiro
 aeroporti(61).regione = 'Sud America';  % Buenos Aires
@@ -611,7 +630,7 @@ aeroporti(72).regione = 'Oceania';  % Melbourne
 aeroporti(73).regione = 'Oceania';  % Perth
 aeroporti(74).regione = 'Oceania';  % Auckland
 
-% Rotte polari (38-50)
+% Rotte polari
 aeroporti(38).regione = 'Rotte Polari';  % Anchorage
 aeroporti(39).regione = 'Rotte Polari';  % Reykjavík
 aeroporti(40).regione = 'Rotte Polari';  % Tromsø
