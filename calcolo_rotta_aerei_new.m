@@ -1,5 +1,4 @@
 %% CALCOLO ROTTA TRA AEROPORTI
-% Utilizza la formula della grande cerchio (Great Circle Distance)
 
 clear all; close all; clc;
 
@@ -632,7 +631,7 @@ switch id_categoria
     case 6  % Ricercatori
         fattore_dose_categoria = 1.20;
         limite_annuo_msv = 20;
-        note_categoria = 'frequenti rotte polari';
+        note_categoria = 'frequentanti rotte polari';
     otherwise
         fattore_dose_categoria = 1.0;
         limite_annuo_msv = 20;
@@ -1426,7 +1425,7 @@ plot(aero2.lon, aero2.lat, 'rs', 'MarkerSize', 8, 'MarkerFaceColor', [0.9 0 0], 
 
 xlabel(ax1, 'Longitudine [°]', 'FontSize', 11);
 ylabel(ax1, 'Latitudine [°]', 'FontSize', 11);
-title(ax1, 'Rotta Aerea - Grande Cerchio', 'FontSize', 12, 'FontWeight', 'bold');
+title(ax1, sprintf('Rotta Aerea - %s', tipo_rotta), 'FontSize', 12, 'FontWeight', 'bold');
 grid(ax1, 'on');
 % Zoom automatico sulla rotta per tratte brevi (<1000 NM)
 if distanza_nm < 1000
