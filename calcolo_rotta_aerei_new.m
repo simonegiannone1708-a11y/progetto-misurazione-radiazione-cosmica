@@ -470,17 +470,80 @@ aeroporti(65).lon = -66.9911;
 aeroporti(65).citta = 'Caracas';
 aeroporti(65).nazione = 'Venezuela';
 
+% Africa
+aeroporti(66).nome = 'O. R. Tambo International';
+aeroporti(66).iata = 'JNB';
+aeroporti(66).lat = -26.1337;
+aeroporti(66).lon = 28.2420;
+aeroporti(66).citta = 'Johannesburg';
+aeroporti(66).nazione = 'Sudafrica';
+
+aeroporti(67).nome = 'Cape Town International';
+aeroporti(67).iata = 'CPT';
+aeroporti(67).lat = -33.9695;
+aeroporti(67).lon = 18.5972;
+aeroporti(67).citta = 'Città del Capo';
+aeroporti(67).nazione = 'Sudafrica';
+
+aeroporti(68).nome = 'Jomo Kenyatta International';
+aeroporti(68).iata = 'NBO';
+aeroporti(68).lat = -1.3192;
+aeroporti(68).lon = 36.9278;
+aeroporti(68).citta = 'Nairobi';
+aeroporti(68).nazione = 'Kenya';
+
+aeroporti(69).nome = 'Cairo International';
+aeroporti(69).iata = 'CAI';
+aeroporti(69).lat = 30.1219;
+aeroporti(69).lon = 31.4056;
+aeroporti(69).citta = 'Il Cairo';
+aeroporti(69).nazione = 'Egitto';
+
+aeroporti(70).nome = 'Addis Ababa Bole';
+aeroporti(70).iata = 'ADD';
+aeroporti(70).lat = 8.9779;
+aeroporti(70).lon = 38.7994;
+aeroporti(70).citta = 'Addis Abeba';
+aeroporti(70).nazione = 'Etiopia';
+
+% Oceania
+aeroporti(71).nome = 'Sydney Kingsford Smith';
+aeroporti(71).iata = 'SYD';
+aeroporti(71).lat = -33.9399;
+aeroporti(71).lon = 151.1753;
+aeroporti(71).citta = 'Sydney';
+aeroporti(71).nazione = 'Australia';
+
+aeroporti(72).nome = 'Melbourne Tullamarine';
+aeroporti(72).iata = 'MEL';
+aeroporti(72).lat = -37.6690;
+aeroporti(72).lon = 144.8410;
+aeroporti(72).citta = 'Melbourne';
+aeroporti(72).nazione = 'Australia';
+
+aeroporti(73).nome = 'Perth Airport';
+aeroporti(73).iata = 'PER';
+aeroporti(73).lat = -31.9403;
+aeroporti(73).lon = 115.9670;
+aeroporti(73).citta = 'Perth';
+aeroporti(73).nazione = 'Australia';
+
+aeroporti(74).nome = 'Auckland Airport';
+aeroporti(74).iata = 'AKL';
+aeroporti(74).lat = -37.0082;
+aeroporti(74).lon = 174.7850;
+aeroporti(74).citta = 'Auckland';
+aeroporti(74).nazione = 'Nuova Zelanda';
+
 n_aeroporti = length(aeroporti);
 
-% Assegnazione regioni geografiche per ogni aeroporto
-% Italia (1-5)
-aeroporti(1).regione = 'Italia';
-aeroporti(2).regione = 'Italia';
-aeroporti(3).regione = 'Italia';
-aeroporti(4).regione = 'Italia';
-aeroporti(5).regione = 'Italia';
-
-% Europa (6-15, 18)
+% Assegnazione regioni geografiche (macro-aree richieste)
+% Europa (include Italia e Russia europea)
+aeroporti(1).regione = 'Europa';
+aeroporti(2).regione = 'Europa';
+aeroporti(3).regione = 'Europa';
+aeroporti(4).regione = 'Europa';
+aeroporti(5).regione = 'Europa';
 aeroporti(6).regione = 'Europa';   % Parigi
 aeroporti(7).regione = 'Europa';   % Barcellona
 aeroporti(8).regione = 'Europa';   % Londra
@@ -491,15 +554,15 @@ aeroporti(12).regione = 'Europa';  % Vienna
 aeroporti(13).regione = 'Europa';  % Zurigo
 aeroporti(14).regione = 'Europa';  % Monaco
 aeroporti(15).regione = 'Europa';  % Bruxelles
+aeroporti(17).regione = 'Europa';  % Mosca
 aeroporti(18).regione = 'Europa';  % Atene
+aeroporti(56).regione = 'Europa';  % San Pietroburgo
+aeroporti(57).regione = 'Europa';  % Novosibirsk
+aeroporti(58).regione = 'Europa';  % Ekaterinburg
+aeroporti(59).regione = 'Europa';  % Vladivostok
 
-% Medio Oriente (16)
-aeroporti(16).regione = 'Medio Oriente';  % Dubai
-
-% Russia (17)
-aeroporti(17).regione = 'Russia';  % Mosca
-
-% Asia (19-26)
+% Asia (include Medio Oriente)
+aeroporti(16).regione = 'Asia';  % Dubai
 aeroporti(19).regione = 'Asia';  % Tokyo
 aeroporti(20).regione = 'Asia';  % Hong Kong
 aeroporti(21).regione = 'Asia';  % Singapore
@@ -508,6 +571,11 @@ aeroporti(23).regione = 'Asia';  % Delhi
 aeroporti(24).regione = 'Asia';  % Seoul
 aeroporti(25).regione = 'Asia';  % Pechino
 aeroporti(26).regione = 'Asia';  % Shanghai
+aeroporti(51).regione = 'Asia';  % Doha
+aeroporti(52).regione = 'Asia';  % Abu Dhabi
+aeroporti(53).regione = 'Asia';  % Istanbul
+aeroporti(54).regione = 'Asia';  % Tel Aviv
+aeroporti(55).regione = 'Asia';  % Riyadh
 
 % Nord America (27-28, 30-37)
 aeroporti(27).regione = 'Nord America';  % New York
@@ -521,44 +589,42 @@ aeroporti(35).regione = 'Nord America';  % Boston
 aeroporti(36).regione = 'Nord America';  % Toronto
 aeroporti(37).regione = 'Nord America';  % Vancouver
 
-% Sud America (29)
+% Sud America (29, 60-65)
 aeroporti(29).regione = 'Sud America';  % São Paulo
-
-% Regioni Polari e Artiche (38-50)
-aeroporti(38).regione = 'Regioni Polari';  % Anchorage
-aeroporti(39).regione = 'Regioni Polari';  % Reykjavík
-aeroporti(40).regione = 'Regioni Polari';  % Tromsø
-aeroporti(41).regione = 'Regioni Polari';  % Murmansk
-aeroporti(42).regione = 'Regioni Polari';  % Naryan-Mar
-aeroporti(43).regione = 'Regioni Polari';  % Nuuk
-aeroporti(44).regione = 'Regioni Polari';  % Sondre Strømfjord
-aeroporti(45).regione = 'Regioni Polari';  % Inuvik
-aeroporti(46).regione = 'Regioni Polari';  % Yellowknife
-aeroporti(47).regione = 'Regioni Polari';  % Barrow
-aeroporti(48).regione = 'Regioni Polari';  % Hammerfest
-aeroporti(49).regione = 'Regioni Polari';  % Longyearbyen
-aeroporti(50).regione = 'Regioni Polari';  % Arkhangelsk
-
-% Medio Oriente (51-55)
-aeroporti(51).regione = 'Medio Oriente';  % Doha
-aeroporti(52).regione = 'Medio Oriente';  % Abu Dhabi
-aeroporti(53).regione = 'Medio Oriente';  % Istanbul
-aeroporti(54).regione = 'Medio Oriente';  % Tel Aviv
-aeroporti(55).regione = 'Medio Oriente';  % Riyadh
-
-% Russia (56-59)
-aeroporti(56).regione = 'Russia';  % San Pietroburgo
-aeroporti(57).regione = 'Russia';  % Novosibirsk
-aeroporti(58).regione = 'Russia';  % Ekaterinburg
-aeroporti(59).regione = 'Russia';  % Vladivostok
-
-% Sud America (60-65)
 aeroporti(60).regione = 'Sud America';  % Rio de Janeiro
 aeroporti(61).regione = 'Sud America';  % Buenos Aires
 aeroporti(62).regione = 'Sud America';  % Lima
 aeroporti(63).regione = 'Sud America';  % Santiago
 aeroporti(64).regione = 'Sud America';  % Bogotá
 aeroporti(65).regione = 'Sud America';  % Caracas
+
+% Africa (66-70)
+aeroporti(66).regione = 'Africa';   % Johannesburg
+aeroporti(67).regione = 'Africa';   % Città del Capo
+aeroporti(68).regione = 'Africa';   % Nairobi
+aeroporti(69).regione = 'Africa';   % Il Cairo
+aeroporti(70).regione = 'Africa';   % Addis Abeba
+
+% Oceania (71-74)
+aeroporti(71).regione = 'Oceania';  % Sydney
+aeroporti(72).regione = 'Oceania';  % Melbourne
+aeroporti(73).regione = 'Oceania';  % Perth
+aeroporti(74).regione = 'Oceania';  % Auckland
+
+% Rotte polari (38-50)
+aeroporti(38).regione = 'Rotte Polari';  % Anchorage
+aeroporti(39).regione = 'Rotte Polari';  % Reykjavík
+aeroporti(40).regione = 'Rotte Polari';  % Tromsø
+aeroporti(41).regione = 'Rotte Polari';  % Murmansk
+aeroporti(42).regione = 'Rotte Polari';  % Naryan-Mar
+aeroporti(43).regione = 'Rotte Polari';  % Nuuk
+aeroporti(44).regione = 'Rotte Polari';  % Sondre Strømfjord
+aeroporti(45).regione = 'Rotte Polari';  % Inuvik
+aeroporti(46).regione = 'Rotte Polari';  % Yellowknife
+aeroporti(47).regione = 'Rotte Polari';  % Barrow
+aeroporti(48).regione = 'Rotte Polari';  % Hammerfest
+aeroporti(49).regione = 'Rotte Polari';  % Longyearbyen
+aeroporti(50).regione = 'Rotte Polari';  % Arkhangelsk
 
 % ========== INTERFACCIA UTENTE ==========
 fprintf('\n');
@@ -723,8 +789,8 @@ while continua_volo
         fprintf('=== VOLO #%d (partenza da %s) ===\n', num_voli, aeroporti(ultimo_aeroporto_arrivo).iata);
     end
     
-    % Crea liste di aeroporti suddivise per regione
-    regioni = {'Italia', 'Europa', 'Medio Oriente', 'Russia', 'Asia', 'Nord America', 'Sud America', 'Regioni Polari'};
+    % Crea liste di aeroporti suddivise per le macro-aree richieste
+    regioni = {'Europa', 'Nord America', 'Sud America', 'Asia', 'Africa', 'Oceania', 'Rotte Polari'};
     aeroporti_per_regione = cell(length(regioni), 1);
     
     for r = 1:length(regioni)
