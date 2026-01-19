@@ -585,7 +585,7 @@ categorie_utenti = { ...
     'Passeggero adulto', ...
     'Bambino', ...
     'Donna in gravidanza', ...
-    'Ricercatori'};
+    'Ricercatori scientifici (frequentanti rotte polari)'};
 
 [id_categoria, ok_cat] = listdlg('ListString', categorie_utenti, ...
     'SelectionMode', 'single', ...
@@ -971,10 +971,12 @@ end
 % Calcola radiazione media sulla rotta considerando il profilo altimetrico
 radiazione_totale_volo = 0;
 dose_accumulata = zeros(1, n_punti);
+gmlat_track = zeros(1, n_punti); % traccia delle latitudini geomagnetiche
+solar_cycle_factor = 1.0; % fattore ciclo solare (placeholder, 1 = medio ciclo)
 
 for k = 1:length(lat_rotta_deg)
-    % Latitudine corrente
-    lat_corrente = abs(lat_rotta_deg(k));
+    % Latitudine geomagnetica corrente (maggior rilevanza per GCR)
+    gmlat_track(k) = abs(geomag_latitude(lat_rotta_deg(k), lon_rotta_deg(k)));
     
     % Altitudine in km
     altitudine_km = altitudine_profilo(k) / 1000;
@@ -992,12 +994,12 @@ for k = 1:length(lat_rotta_deg)
     coeff_alt = 0.45; % coefficiente altitudine (μSv/h per km)
     coeff_lat = 0.3;  % coefficiente latitudine
     
-    % Fattore latitudinale (radiazione maggiore ai poli)
-    fattore_latitudine = 1 + coeff_lat * (sin(deg2rad(lat_corrente)))^2;
+    % Fattore latitudinale (geomagnetica): radiazione maggiore ai poli
+    fattore_latitudine = 1 + coeff_lat * (sin(deg2rad(gmlat_track(k))))^2;
     
     % Se l'aereo è in aria (altitudine > 100m), applica la formula di quota
     if altitudine_km > 0.1
-        rad_oraria_microSv = baseline + (coeff_alt * altitudine_km) * fattore_latitudine;
+        rad_oraria_microSv = baseline + (coeff_alt * altitudine_km) * fattore_latitudine * solar_cycle_factor;
     else
         % A terra, radiazione trascurabile
         rad_oraria_microSv = 0.03;
@@ -1240,9 +1242,14 @@ else
 end
 
 % Applica i fattori (tempesta geomagnetica + protoni GOES) alla dose di radiazione
-fattore_totale = fattore_tempesta * fattore_protoni_global;
+fattore_sep = fattore_tempesta * fattore_protoni_global; % SEP: proton flux + lat geomag + Kp
+fattore_totale = fattore_sep; % totale = solo SEP sopra GCR base (GCR già incluso nel modello base)
+% Componenti separate
+radiazione_media_oraria_gcr = radiazione_media_oraria; % GCR: quota + lat geomag + ciclo solare
+radiazione_media_oraria_sep_extra = radiazione_media_oraria_gcr * max(0, fattore_totale - 1); % contributo additivo SEP (solo se amplifica)
+
 dose_volo_corretto = dose_volo * fattore_totale;
-radiazione_media_oraria_corretto = radiazione_media_oraria * fattore_totale;
+radiazione_media_oraria_corretto = radiazione_media_oraria_gcr * fattore_totale;
 
     % Applica il fattore dose specifico per categoria
     dose_volo_finale = dose_volo_corretto * fattore_dose_categoria;
@@ -1308,8 +1315,10 @@ fprintf('  Tempo di volo:  %d h %d min (a 900 km/h)\n', ore, minuti);
 fprintf('\n');
 
 fprintf('RADIAZIONI COSMICHE:\n');
-fprintf('  Radiazione media oraria in volo: %.4f mSv/h\n', radiazione_media_oraria);
-fprintf('  Dose totale di radiazione: %.4f mSv\n', dose_volo);
+fprintf('  GCR (quota + lat geomagnetica + ciclo solare): %.4f mSv/h\n', radiazione_media_oraria_gcr);
+fprintf('  SEP (proton flux + Kp + lat geomagnetica): +%.4f mSv/h\n', radiazione_media_oraria_sep_extra);
+fprintf('  Radiazione media oraria totale in volo: %.4f mSv/h\n', radiazione_media_oraria_corretto);
+fprintf('  Dose totale di radiazione: %.4f mSv\n', dose_volo_corretto);
 fprintf('\n');
 fprintf('DATI TEMPESTE SOLARI (NOAA):\n');
 fprintf('  Indice Kp (attività geomagnetica): %.1f\n', indice_kp);
@@ -1677,9 +1686,9 @@ if ~isnan(limite_annuo_msv)
     percent_limite_finale = (dose_cumulativa / limite_annuo_msv) * 100;
     fprintf('  Percentuale del limite annuo (%.0f mSv): %.2f%%\n', limite_annuo_msv, percent_limite_finale);
     if percent_limite_finale > 100
-        fprintf('  ⚠️  ATTENZIONE: Limite annuo superato!\n');
+        fprintf('  ATTENZIONE: Limite annuo superato!\n');
     elseif percent_limite_finale > 80
-        fprintf('  ⚠️  AVVISO: Prossimo al limite annuo\n');
+        fprintf('  AVVISO: Prossimo al limite annuo\n');
     end
 else
     fprintf('  Limite annuo: non normato\n');
