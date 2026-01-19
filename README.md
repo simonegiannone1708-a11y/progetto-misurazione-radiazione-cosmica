@@ -37,12 +37,6 @@ Modalità simulazione con database di tempeste solari reali:
 - **Ortodromica (Great Circle)**: rotta più breve su sfera (>300 NM) - ottimale per lunghe distanze
 - **Lossodromica (Rhumb Line)**: rotta che interseca tutti i meridiani con lo stesso angolo (≤300 NM) - ottimale per le tratte brevi
 
-# 🌌 Progetto Misurazione Radiazione Cosmica
-
-Sistema avanzato per il **calcolo della dose di radiazione cosmica** ricevuta durante voli aerei, con integrazione di **dati meteo spaziali in tempo reale** e **simulazione di eventi solari storici**.
-
-Il progetto è pensato per analisi scientifiche, supporto alla sicurezza aeronautica e valutazione dell’esposizione radiologica di equipaggi e passeggeri su rotte internazionali, incluse **rotte polari ad alta latitudine**.
-
 ---
 
 ## ✨ Obiettivi
@@ -91,14 +85,6 @@ Particelle solari energetiche durante:
 ---
 
 ## 📊 Modello di Calcolo
-
-### 👥 Categorie Utenti con Limiti Normativi
-1. **Pilota**: 20 mSv/anno (ICRP 2007)
-2. **Cabin Crew**: 20 mSv/anno
-3. **Passeggero adulto**: 1 mSv/anno (pubblico generico)
-4. **Bambino**: 1 mSv/anno (maggiore radiosensibilità)
-5. **Donna in gravidanza**: 1 mSv/anno (protezione fetale)
-6. **Ricercatori scientifici (rotte polari)**: 20 mSv/anno (esposizione professionale su rotte ad alta latitudine)
 
 ### 📊 Calcoli Fisici
 
@@ -213,8 +199,7 @@ calcolo_rotta_aerei_new
 - **NOAA Space Weather Scales**: classificazione eventi SEP (S-scale)
 - **EURATOM 96/29**: limiti dose per lavoratori esposti
 - **ICAO Annex 6**: standard aviazione civile internazionale
-
-## Limiti e Sviluppi Futuri
+---
 
 ### Limitazioni Attuali
 - Ciclo solare: fattore fisso (placeholder 1.0), non integrato con dati SSN (Sunspot Number)
