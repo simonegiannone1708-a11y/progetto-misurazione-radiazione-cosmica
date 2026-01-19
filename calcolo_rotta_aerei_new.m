@@ -1186,18 +1186,18 @@ else
 
         % Parser Kp definito come funzione locale a fine file
 
-    % Lettura primaria (1m)
-    try
-        dati_json = webread(url_kp_primary, options);
-        if ~isempty(dati_json)
-            if isstruct(dati_json)
-                rec = dati_json(end);
-                candidateFields = {'kp_index','kp','Kp','estimated_kp'};
-                val = NaN;
-                for ff = 1:numel(candidateFields)
-                    f = candidateFields{ff};
-                    if isfield(rec, f)
-                        val = parseKpValue(rec.(f));
+        % Lettura primaria (1m)
+        try
+            dati_json = webread(url_kp_primary, options);
+            if ~isempty(dati_json)
+                if isstruct(dati_json)
+                    rec = dati_json(end);
+                    candidateFields = {'kp_index','kp','Kp','estimated_kp'};
+                    val = NaN;
+                    for ff = 1:numel(candidateFields)
+                        f = candidateFields{ff};
+                        if isfield(rec, f)
+                            val = parseKpValue(rec.(f));
                         if ~isnan(val), break; end
                     end
                 end
