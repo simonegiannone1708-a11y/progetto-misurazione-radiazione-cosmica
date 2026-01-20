@@ -164,7 +164,7 @@ coastlines.mat  % Dati coastline mondiali
 
 ### Avvio
 ```matlab
-calcolo_rotta_aerei_new
+misura_radiazione_cosmica.m
 ```
 
 ### Categorie Utenti
