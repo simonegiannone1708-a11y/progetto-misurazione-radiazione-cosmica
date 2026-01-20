@@ -43,8 +43,6 @@ Il programma calcola l'esposizione alle radiazioni ionizzanti per diverse catego
 
 ---
 
-<!-- Sezione rimossa per evitare duplicazione: concetti GCR/SEP sono coperti in 'Modello di Calcolo' -->
-
 ## 📡 Dati in Tempo Reale
 
 - **NOAA SWPC Integration**
@@ -265,7 +263,6 @@ Lo script supporta 6 categorie di utenti con caratteristiche specifiche:
 
 ### Limitazioni Attuali
 - Ciclo solare: fattore fisso (placeholder 1.0), non integrato con dati SSN (Sunspot Number)
-- Modello GCR: semplificato (non considera composizione spettrale completa)
 - Altitudine: profilo idealizzato (salita/crociera/discesa lineare)
 --- 
 
