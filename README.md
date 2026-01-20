@@ -79,25 +79,78 @@ La modalità simulazione fornisce un ambiente interattivo per:
 ### 📊 Calcoli Fisici
 
 #### Componente GCR
+
+**Formula completa:**
 ```
-Dose_GCR = f(altitudine, latitudine_geomagnetica, fase_ciclo_solare)
+Dose_GCR = base_GCR × f_alt × f_lat × f_solar × t_volo
 ```
+
+Dove:
+- **base_GCR** = 5.0 μSv/h (dose base a quota di crociera, 45°N)
+- **f_alt** = fattore altitudine = `exp(0.2 × (h_km - 10))` dove h_km è quota in km
+- **f_lat** = fattore latitudine geomagnetica = `1 + 0.5 × |sin(gmlat)|`
+- **f_solar** = fattore ciclo solare = 1.0 (placeholder, varia da 0.7 a 1.3 nel ciclo 11 anni)
+- **t_volo** = tempo di volo in ore
+
+**Dipendenze:**
 - **Altitudine**: incremento esponenziale con la quota (massimo a ~12 km / FL390)
+  - FL250 (7.6 km): f_alt ≈ 0.55
+  - FL350 (10.7 km): f_alt ≈ 1.15
+  - FL390 (11.9 km): f_alt ≈ 1.42
 - **Latitudine geomagnetica**: massima ai poli (campo magnetico terrestre più debole), minima all'equatore
+  - Equatore (0°): f_lat = 1.0
+  - Media latitudine (45°): f_lat ≈ 1.35
+  - Poli (90°): f_lat = 1.5
 - **Ciclo solare**: attività solare riduce GCR (minimo solare → massima radiazione cosmica)
 
 #### Componente SEP
+
+**Formula completa:**
 ```
-Dose_SEP = f(proton_flux, Kp_index, latitudine_geomagnetica)
+Dose_SEP = base_SEP × (proton_flux / 100)^0.75 × (Kp / 5) × f_lat × t_volo
 ```
-- **Proton flux**: intensità particelle ≥10 MeV (pfu = particles/cm²·s·sr)
-- **Classificazione NOAA**: S0-S5 (None → Extreme)
-	- S0: <10 pfu (nessun evento)
-	- S1: ≥10 pfu (minor)
-	- S2: ≥100 pfu (moderate)
-	- S3: ≥1000 pfu (strong)
-	- S4: ≥10000 pfu (severe)
-	- S5: ≥100000 pfu (extreme)
+
+**Condizione di attivazione:** SEP si attiva solo se `proton_flux ≥ 10 pfu`
+
+Dove:
+- **base_SEP** = 2.0 μSv/h (dose base per flux 100 pfu, Kp=5)
+- **proton_flux** = flusso protonico ≥10 MeV in pfu (particles/cm²·s·sr)
+- **Esponente 0.75** = scaling non-lineare del flusso protonico
+- **Kp** = indice K planetario (0-9, misura attività geomagnetica)
+- **f_lat** = fattore latitudine geomagnetica (stesso del GCR)
+- **t_volo** = tempo di volo in ore
+
+**Classificazione NOAA S-scale:**
+- **S0**: <10 pfu (nessun evento SEP attivo)
+- **S1**: ≥10 pfu (minor)
+- **S2**: ≥100 pfu (moderate)
+- **S3**: ≥1000 pfu (strong)
+- **S4**: ≥10000 pfu (severe)
+- **S5**: ≥100000 pfu (extreme)
+
+#### Dose Totale per Categoria Utente
+
+```
+Dose_finale = (Dose_GCR + Dose_SEP) × fattore_categoria
+```
+
+**Fattori dose per categoria:**
+
+| Categoria | Fattore | Motivazione |
+|-----------|---------|-------------|
+| **Pilota** | 1.0× | Posizione cockpit, massima esposizione |
+| **Cabin Crew** | 0.90× | Schermatura migliore in cabina passeggeri |
+| **Passeggero adulto** | 0.85× | Posizione centrale fusoliera |
+| **Bambino** | 1.20× | Maggiore radiosensibilità tessuti in crescita |
+| **Donna in gravidanza** | 1.0× | Protezione fetale (no fattore aggiuntivo, ma limite più basso) |
+| **Ricercatori polari** | 1.20× | Frequente esposizione a rotte ad alta latitudine |
+
+**Note sui fattori:**
+- Il fattore categoria modifica la dose finale per riflettere:
+  1. **Schermatura differenziale** nella fusoliera (cockpit vs cabina)
+  2. **Radiosensibilità biologica** (adulti vs bambini)
+  3. **Condizioni di esposizione** (frequenza rotte polari per ricercatori)
+- Categorie vulnerabili (bambini, gravidanza) hanno fattore >1.0 o limiti più conservativi
 
 ### 📈 Output e Visualizzazioni
 
