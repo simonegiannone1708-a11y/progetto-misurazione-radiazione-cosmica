@@ -7,7 +7,14 @@ Sistema avanzato di calcolo della dose di radiazione cosmica ricevuta durante vo
 Il programma calcola l'esposizione alle radiazioni ionizzanti per diverse categorie di utenti (equipaggio, passeggeri, ricercatori) su rotte aeree internazionali, considerando:
 - **GCR (Galactic Cosmic Rays)**: radiazione galattica di fondo dipendente da quota, latitudine geomagnetica e ciclo solare
 - **SEP (Solar Energetic Particles)**: particelle solari energetiche durante tempeste geomagnetiche
+---
 
+##  Obiettivi
+- Stimare l’esposizione alle **radiazioni ionizzanti** in ambiente aeronautico
+- Integrare **dati reali NOAA SWPC**
+- Simulare **eventi solari estremi (SEP)**
+
+---
 ## Caratteristiche Principali
 
 
@@ -27,14 +34,6 @@ Il programma calcola l'esposizione alle radiazioni ionizzanti per diverse catego
 ### 🛫 Tipi di Rotta
 - **Ortodromica (Great Circle)**: rotta più breve su sfera (>300 NM) - ottimale per lunghe distanze
 - **Lossodromica (Rhumb Line)**: rotta che interseca tutti i meridiani con lo stesso angolo (≤300 NM) - ottimale per le tratte brevi
-
----
-
-##  Obiettivi
-- Stimare l’esposizione alle **radiazioni ionizzanti** in ambiente aeronautico
-- Integrare **dati reali NOAA SWPC**
-- Simulare **eventi solari estremi (SEP)**
-- Valutare la conformità ai **limiti normativi ICRP**
 
 ---
 
