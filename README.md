@@ -10,11 +10,6 @@ Il programma calcola l'esposizione alle radiazioni ionizzanti per diverse catego
 
 ## Caratteristiche Principali
 
-### 📡 Dati in Tempo Reale
-- Integrazione NOAA SWPC (Kp, GOES proton). Dettagli nella sezione dedicata.
-
-### 🌩️ Eventi SEP Storici
-- Database di tempeste solari reali. Tabella esempi nella sezione simulazione.
 
 ### ✈️ Database Aeroporti
 74 aeroporti internazionali su 6 continenti:
@@ -35,7 +30,7 @@ Il programma calcola l'esposizione alle radiazioni ionizzanti per diverse catego
 
 ---
 
-## ✨ Obiettivi
+##  Obiettivi
 - Stimare l’esposizione alle **radiazioni ionizzanti** in ambiente aeronautico
 - Integrare **dati reali NOAA SWPC**
 - Simulare **eventi solari estremi (SEP)**
@@ -74,7 +69,7 @@ La modalità simulazione fornisce un ambiente interattivo per:
 
 ## 📊 Modello di Calcolo
 
-### 📊 Calcoli Fisici
+###  Calcoli Fisici
 
 #### Componente GCR
 
@@ -184,7 +179,7 @@ Approssimazione dipolare con polo magnetico a:
 - **Latitudine**: 80.4°N
 - **Longitudine**: 72.6°W (Groenlandia)
 
-**spiegazione** si tratta di un modello a “barra” (dipolo) per stimare la protezione magnetica: ai poli campo più debole → dose ↑, all’equatore campo più forte → dose ↓. È rapido, coglie il trend principale; anomalie locali richiederebbero modelli completi ma non servono per questa simulazione.
+**Spiegazione**: si tratta di un modello a “barra” (dipolo) per stimare la protezione magnetica: ai poli campo più debole → dose ↑, all’equatore campo più forte → dose ↓. È rapido, coglie il trend principale; anomalie locali richiederebbero modelli completi ma non servono per questa simulazione.
 
 Calcolo latitudine geomagnetica:
 ```matlab
