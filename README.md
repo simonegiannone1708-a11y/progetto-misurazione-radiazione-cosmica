@@ -184,6 +184,8 @@ Approssimazione dipolare con polo magnetico a:
 - **Latitudine**: 80.4°N
 - **Longitudine**: 72.6°W (Groenlandia)
 
+**spiegazione** si tratta di un modello a “barra” (dipolo) per stimare la protezione magnetica: ai poli campo più debole → dose ↑, all’equatore campo più forte → dose ↓. È rapido, coglie il trend principale; anomalie locali richiederebbero modelli completi ma non servono per questa simulazione.
+
 Calcolo latitudine geomagnetica:
 ```matlab
 gmlat = asin(sin(lat)*sin(lat_mag) + cos(lat)*cos(lat_mag)*cos(lon - lon_mag))
