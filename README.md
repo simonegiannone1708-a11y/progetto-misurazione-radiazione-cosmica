@@ -11,14 +11,10 @@ Il programma calcola l'esposizione alle radiazioni ionizzanti per diverse catego
 ## Caratteristiche Principali
 
 ### 📡 Dati in Tempo Reale
-- **NOAA SWPC Integration**: recupero automatico dell'indice Kp (attività geomagnetica) e flusso di protoni GOES
-- **Aggiornamenti Live**: dati satellitari aggiornati ogni minuto (Kp) e ogni giorno (proton flux ≥10 MeV)
+- Integrazione NOAA SWPC (Kp, GOES proton). Dettagli nella sezione dedicata.
 
 ### 🌩️ Eventi SEP Storici
-Modalità simulazione con database di tempeste solari reali:
-- **Gennaio 2005**: 5040 pfu, Kp=8.0 (forte)
-- **Halloween Storm - Ottobre 2003**: 29500 pfu, Kp=9.0 (estremo - uno degli eventi più intensi mai registrati)
-- **Settembre 2017**: 6530 pfu, Kp=8.3 (severo)
+- Database di tempeste solari reali. Tabella esempi nella sezione simulazione.
 
 ### ✈️ Database Aeroporti
 74 aeroporti internazionali su 6 continenti:
@@ -47,21 +43,7 @@ Modalità simulazione con database di tempeste solari reali:
 
 ---
 
-## 🔬 Tipologie di Radiazione Considerate
-
-### ☄️ GCR – Galactic Cosmic Rays
-Radiazione cosmica galattica di fondo dipendente da:
-- **Altitudine di volo**
-- **Latitudine geomagnetica**
-- **Fase del ciclo solare**
-
-### ☀️ SEP – Solar Energetic Particles
-Particelle solari energetiche durante:
-- Tempeste geomagnetiche
-- Espulsioni di massa coronale (CME)
-- Eventi solari estremi storici
-
----
+<!-- Sezione rimossa per evitare duplicazione: concetti GCR/SEP sono coperti in 'Modello di Calcolo' -->
 
 ## 📡 Dati in Tempo Reale
 
@@ -81,6 +63,14 @@ Particelle solari energetiche durante:
 | Gennaio 2005 | 5.040 | 8.0 | Forte |
 | Halloween Storm (2003) | 29.500 | 9.0 | **Estremo** |
 | Settembre 2017 | 6.530 | 8.3 | Severo |
+
+### Fattore Didattico
+
+La modalità simulazione fornisce un ambiente interattivo per:
+- Comprendere i principi della radiazione cosmica 
+- Visualizzare l’effetto del campo geomagnetico sulle rotte 
+- Valutare l’impatto di eventi solari estremi (S-scale NOAA) sulle dosi
+- Stimare e confrontare la dose in ambiente aeronautico per diverse categorie utente
 
 ---
 
